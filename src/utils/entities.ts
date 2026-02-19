@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 export const createBeam = (): THREE.Object3D => {
   const BEAM_HEIGHT = 10;
@@ -67,4 +68,20 @@ export const createBeam = (): THREE.Object3D => {
   });
 
   return new THREE.Mesh(geometry, material);
+};
+
+export const loadModel = async (
+  loader: GLTFLoader,
+  path: string,
+): Promise<THREE.Group<THREE.Object3DEventMap>> => {
+  return new Promise((resolve, reject) => {
+    loader.load(
+      path,
+      data => {
+        resolve(data.scene);
+      },
+      () => {},
+      err => reject(err),
+    );
+  });
 };

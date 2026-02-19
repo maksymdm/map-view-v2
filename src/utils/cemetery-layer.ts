@@ -5,9 +5,10 @@ import {
   type LngLatLike,
   Map,
 } from 'maplibre-gl';
-import { createBeam } from './entities.ts';
+import { createBeam, loadModel } from './entities.ts';
 import { FreyaScene } from './scene.ts';
 import { createProjectionMatrix } from './matrix.ts';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 enum ObjectId {
   LIGHT_BEAM,
@@ -33,6 +34,7 @@ export class CemeteryLayer implements CustomLayerInterface {
 
   private freyaScene: FreyaScene | null = null;
   private readonly waypointCoords: LngLatLike = [0, 0];
+  private readonly gltfLoader = new GLTFLoader();
 
   private objectIndex: Record<ObjectId, CemeteryLayoutObject> = {} as Record<
     ObjectId,
@@ -44,7 +46,7 @@ export class CemeteryLayer implements CustomLayerInterface {
     this.waypointCoords = waypointCoords;
   }
 
-  onAdd(map: Map, gl: WebGLRenderingContext | WebGL2RenderingContext) {
+  async onAdd(map: Map, gl: WebGLRenderingContext | WebGL2RenderingContext) {
     this.freyaScene = new FreyaScene(map, gl);
 
     const directionalLight = new THREE.DirectionalLight(0xffffff);
@@ -70,7 +72,27 @@ export class CemeteryLayer implements CustomLayerInterface {
       matrix: beamMatrix,
     };
 
-    this.freyaScene.add(beam);
+    try {
+      const locationPin = await loadModel(this.gltfLoader, '/models/location_pin.glb');
+      const locationPinMatrix = createProjectionMatrix({
+        location: this.waypointCoords,
+        modelRotate: [0, Math.PI / 2, Math.PI / 2],
+        translationFactorX: 0.7,
+        translationFactorY: 0.7,
+        translationFactorZ: 5,
+      });
+
+      this.objectIndex[ObjectId.WAYPOINT_MARKER] = {
+        matrix: locationPinMatrix,
+        object: locationPin,
+      };
+    } catch (e) {
+      console.error(e);
+    }
+
+    for (const key in this.objectIndex) {
+      this.freyaScene.add(this.objectIndex[key as unknown as ObjectId].object);
+    }
   }
 
   render(_: WebGLRenderingContext, args: CustomRenderMethodInput) {
@@ -78,8 +100,12 @@ export class CemeteryLayer implements CustomLayerInterface {
       args.defaultProjectionData.mainMatrix,
     );
 
-    defaultProjectionMatrix.multiply(this.objectIndex[ObjectId.LIGHT_BEAM].matrix);
+    for (const key in this.objectIndex) {
+      const projectionMatrix = defaultProjectionMatrix
+        .clone()
+        .multiply(this.objectIndex[key as unknown as ObjectId].matrix);
 
-    this.freyaScene?.draw(defaultProjectionMatrix);
+      this.freyaScene?.draw(projectionMatrix);
+    }
   }
 }

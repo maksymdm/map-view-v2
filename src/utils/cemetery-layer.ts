@@ -79,7 +79,8 @@ export class CemeteryLayer implements CustomLayerInterface {
         modelRotate: [0, Math.PI / 2, Math.PI / 2],
         translationFactorX: 0.7,
         translationFactorY: 0.7,
-        translationFactorZ: 5,
+        translationFactorZ: 20,
+        scaleFactor: 4,
       });
 
       this.objectIndex[ObjectId.WAYPOINT_MARKER] = {
@@ -91,7 +92,10 @@ export class CemeteryLayer implements CustomLayerInterface {
     }
 
     for (const key in this.objectIndex) {
-      this.freyaScene.add(this.objectIndex[key as unknown as ObjectId].object);
+      const { object } = this.objectIndex[key as unknown as ObjectId];
+      object.matrixAutoUpdate = false;
+
+      this.freyaScene.add(object);
     }
   }
 
@@ -101,11 +105,11 @@ export class CemeteryLayer implements CustomLayerInterface {
     );
 
     for (const key in this.objectIndex) {
-      const projectionMatrix = defaultProjectionMatrix
-        .clone()
-        .multiply(this.objectIndex[key as unknown as ObjectId].matrix);
+      const { object, matrix } = this.objectIndex[key as unknown as ObjectId];
 
-      this.freyaScene?.draw(projectionMatrix);
+      object.matrix = defaultProjectionMatrix.clone().multiply(matrix);
     }
+
+    this.freyaScene?.draw();
   }
 }

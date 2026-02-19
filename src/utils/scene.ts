@@ -22,9 +22,7 @@ export class FreyaScene {
     return this.scene.add(...object);
   }
 
-  draw(projectionMatrix: THREE.Matrix4) {
-    this.camera.projectionMatrix = projectionMatrix;
-
+  draw() {
     this.renderer.resetState();
     this.renderer.render(this.scene, this.camera);
   }

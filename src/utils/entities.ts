@@ -2,9 +2,9 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 export const createBeam = (): THREE.Object3D => {
-  const BEAM_HEIGHT = 10;
+  const BEAM_HEIGHT = 5;
   const BEAM_BOTTOM = 0.5;
-  const BEAM_TOP = 4.0;
+  const BEAM_TOP = 3.0;
 
   const h = BEAM_HEIGHT;
   const b = BEAM_BOTTOM / 2;
@@ -64,6 +64,19 @@ export const createBeam = (): THREE.Object3D => {
     depthWrite: false,
     depthTest: true,
     blending: THREE.NormalBlending,
+    side: THREE.DoubleSide,
+  });
+
+  return new THREE.Mesh(geometry, material);
+};
+
+export const createPhotoDisc = (): THREE.Object3D => {
+  const textureLoader = new THREE.TextureLoader();
+  const photoTexture = textureLoader.load('/img/avatar.jpeg');
+
+  const geometry = new THREE.CircleGeometry(0.9, 32);
+  const material = new THREE.MeshBasicMaterial({
+    map: photoTexture,
     side: THREE.DoubleSide,
   });
 

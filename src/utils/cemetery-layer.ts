@@ -5,7 +5,7 @@ import {
   type LngLatLike,
   Map,
 } from 'maplibre-gl';
-import { createBeam, loadModel } from './entities.ts';
+import { createBeam, createPhotoDisc, loadModel } from './entities.ts';
 import { FreyaScene } from './scene.ts';
 import { createProjectionMatrix } from './matrix.ts';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
@@ -15,6 +15,7 @@ enum ObjectId {
   WAYPOINT_GRAVE,
   WAYPOINT_MARKER,
   NAVIGATION_ARROW,
+  PHOTO_DISC,
 }
 
 interface CemeteryLayoutObject {
@@ -79,7 +80,7 @@ export class CemeteryLayer implements CustomLayerInterface {
         modelRotate: [0, Math.PI / 2, Math.PI / 2],
         translationFactorX: 0.7,
         translationFactorY: 0.7,
-        translationFactorZ: 20,
+        translationFactorZ: 15,
         scaleFactor: 4,
       });
 
@@ -90,6 +91,21 @@ export class CemeteryLayer implements CustomLayerInterface {
     } catch (e) {
       console.error(e);
     }
+
+    const photoDisc = createPhotoDisc();
+    const photoDiscMatrix = createProjectionMatrix({
+      location: this.waypointCoords,
+      modelRotate: [Math.PI / 2, 0, 0],
+      translationFactorX: 0.7,
+      translationFactorY: 0.8,
+      translationFactorZ: 15,
+      scaleFactor: 4,
+    });
+
+    this.objectIndex[ObjectId.PHOTO_DISC] = {
+      matrix: photoDiscMatrix,
+      object: photoDisc,
+    };
 
     for (const key in this.objectIndex) {
       const { object } = this.objectIndex[key as unknown as ObjectId];

@@ -1,0 +1,169 @@
+{
+  "trip": {
+    "locations": [
+      {
+        "type": "break",
+        "lat": 50.416717,
+        "lon": 30.511006,
+        "original_index": 0
+      },
+      {
+        "type": "break",
+        "lat": 50.420318,
+        "lon": 30.505889,
+        "side_of_street": "left",
+        "original_index": 1
+      }
+    ],
+    "legs": [
+      {
+        "maneuvers": [
+          {
+            "type": 1,
+            "instruction": "Walk north.",
+            "verbal_succinct_transition_instruction": "Walk north.",
+            "verbal_pre_transition_instruction": "Walk north.",
+            "verbal_post_transition_instruction": "Continue for 400 metres.",
+            "bearing_after": 338,
+            "time": 388.381,
+            "length": 0.427,
+            "cost": 433.255,
+            "begin_shape_index": 0,
+            "end_shape_index": 10,
+            "travel_mode": "pedestrian",
+            "travel_type": "foot"
+          },
+          {
+            "type": 15,
+            "instruction": "Turn left.",
+            "verbal_transition_alert_instruction": "Turn left.",
+            "verbal_succinct_transition_instruction": "Turn left.",
+            "verbal_pre_transition_instruction": "Turn left.",
+            "verbal_post_transition_instruction": "Continue for 200 metres.",
+            "bearing_before": 333,
+            "bearing_after": 244,
+            "time": 233.407,
+            "length": 0.239,
+            "cost": 272.195,
+            "begin_shape_index": 10,
+            "end_shape_index": 15,
+            "travel_mode": "pedestrian",
+            "travel_type": "foot"
+          },
+          {
+            "type": 6,
+            "instruction": "Your destination is on the left.",
+            "verbal_transition_alert_instruction": "Your destination will be on the left.",
+            "verbal_pre_transition_instruction": "Your destination is on the left.",
+            "bearing_before": 305,
+            "time": 0,
+            "length": 0,
+            "cost": 0,
+            "begin_shape_index": 15,
+            "end_shape_index": 15,
+            "travel_mode": "pedestrian",
+            "travel_type": "foot"
+          }
+        ],
+        "summary": {
+          "has_time_restrictions": false,
+          "has_toll": false,
+          "has_highway": false,
+          "has_ferry": false,
+          "min_lat": 50.416727,
+          "min_lon": 30.505936,
+          "max_lat": 50.42036,
+          "max_lon": 30.511006,
+          "time": 621.788,
+          "length": 0.667,
+          "cost": 705.451
+        },
+        "shape": "oded_B{xfey@KFaGfDkBdAelAbq@}gArl@wChAkC`A_\\tLwI~D}JvH|\\t`Bv@vMaXrg@wEhPeCfH"
+      }
+    ],
+    "summary": {
+      "has_time_restrictions": false,
+      "has_toll": false,
+      "has_highway": false,
+      "has_ferry": false,
+      "min_lat": 50.416727,
+      "min_lon": 30.505936,
+      "max_lat": 50.42036,
+      "max_lon": 30.511006,
+      "time": 621.788,
+      "length": 0.667,
+      "cost": 705.451
+    },
+    "status_message": "Found route between points",
+    "status": 0,
+    "units": "kilometers",
+    "language": "en-GB"
+  },
+  "id": "valhalla_directions",
+  "decodedGeometry": [
+    [
+      50.416728,
+      30.511006
+    ],
+    [
+      50.416734,
+      30.511002
+    ],
+    [
+      50.416863,
+      30.510918
+    ],
+    [
+      50.416917,
+      30.510883
+    ],
+    [
+      50.418152,
+      30.510081
+    ],
+    [
+      50.419319,
+      30.509351
+    ],
+    [
+      50.419395,
+      30.509314
+    ],
+    [
+      50.419465,
+      30.509281
+    ],
+    [
+      50.419929,
+      30.509062
+    ],
+    [
+      50.420101,
+      30.508966
+    ],
+    [
+      50.420292,
+      30.50881
+    ],
+    [
+      50.419813,
+      30.507247
+    ],
+    [
+      50.419785,
+      30.507011
+    ],
+    [
+      50.420186,
+      30.506361
+    ],
+    [
+      50.420294,
+      30.506084
+    ],
+    [
+      50.420361,
+      30.505936
+    ]
+  ]
+}

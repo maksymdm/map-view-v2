@@ -14,7 +14,7 @@ enum ObjectId {
   LIGHT_BEAM,
   WAYPOINT_GRAVE,
   WAYPOINT_MARKER,
-  NAVIGATION_ARROW,
+  POSITION_ARROW,
   PHOTO_DISC,
 }
 
@@ -25,6 +25,7 @@ interface CemeteryLayoutObject {
 
 export interface CemeteryLayerConfig {
   id?: string;
+  startPointCoords: LngLatLike;
   waypointCoords: LngLatLike;
 }
 
@@ -34,6 +35,7 @@ export class CemeteryLayer implements CustomLayerInterface {
   renderingMode: '2d' | '3d' = '3d';
 
   private freyaScene: FreyaScene | null = null;
+  private currentPointCoords: LngLatLike = [0, 0];
   private readonly waypointCoords: LngLatLike = [0, 0];
   private readonly gltfLoader = new GLTFLoader();
 
@@ -42,9 +44,21 @@ export class CemeteryLayer implements CustomLayerInterface {
     CemeteryLayoutObject
   >;
 
-  constructor({ id = 'cemetery-layer', waypointCoords }: CemeteryLayerConfig) {
+  constructor({ id = 'cemetery-layer', waypointCoords, startPointCoords }: CemeteryLayerConfig) {
     this.id = id;
     this.waypointCoords = waypointCoords;
+    this.currentPointCoords = startPointCoords;
+  }
+
+  updateCurrentPointCoords(map: Map, coords: LngLatLike): void {
+    this.currentPointCoords = coords;
+
+    this.objectIndex[ObjectId.POSITION_ARROW].matrix = createProjectionMatrix({
+      location: this.currentPointCoords,
+      scaleFactor: 0.5,
+    });
+
+    map.triggerRepaint();
   }
 
   async onAdd(map: Map, gl: WebGLRenderingContext | WebGL2RenderingContext) {
@@ -90,6 +104,24 @@ export class CemeteryLayer implements CustomLayerInterface {
       this.objectIndex[ObjectId.WAYPOINT_MARKER] = {
         matrix: locationPinMatrix,
         object: locationPin,
+      };
+    } catch (e) {
+      console.error(e);
+    }
+
+    try {
+      const positionArrow = await loadModel(
+        this.gltfLoader,
+        `${import.meta.env.BASE_URL}/models/position.glb`,
+      );
+      const positionArrowMatrix = createProjectionMatrix({
+        location: this.currentPointCoords,
+        modelRotate: [0, 0, 0],
+      });
+
+      this.objectIndex[ObjectId.POSITION_ARROW] = {
+        matrix: positionArrowMatrix,
+        object: positionArrow,
       };
     } catch (e) {
       console.error(e);

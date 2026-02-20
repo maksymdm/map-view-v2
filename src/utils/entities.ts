@@ -72,7 +72,7 @@ export const createBeam = (): THREE.Object3D => {
 
 export const createPhotoDisc = (): THREE.Object3D => {
   const textureLoader = new THREE.TextureLoader();
-  const photoTexture = textureLoader.load('/img/avatar.jpeg');
+  const photoTexture = textureLoader.load(`${import.meta.env.BASE_URL}/img/avatar.jpeg`);
 
   const geometry = new THREE.CircleGeometry(0.9, 32);
   const material = new THREE.MeshBasicMaterial({

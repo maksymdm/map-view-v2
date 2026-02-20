@@ -74,7 +74,10 @@ export class CemeteryLayer implements CustomLayerInterface {
     };
 
     try {
-      const locationPin = await loadModel(this.gltfLoader, '/models/location_pin.glb');
+      const locationPin = await loadModel(
+        this.gltfLoader,
+        `${import.meta.env.BASE_URL}/models/location_pin.glb`,
+      );
       const locationPinMatrix = createProjectionMatrix({
         location: this.waypointCoords,
         modelRotate: [0, Math.PI / 2, Math.PI / 2],

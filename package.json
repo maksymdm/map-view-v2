@@ -8,11 +8,14 @@
     "format:check": "prettier --check .",
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "devDependencies": {
     "@types/three": "^0.182.0",
     "eslint-config-prettier": "^10.1.8",
+    "gh-pages": "^6.3.0",
     "prettier": "^3.8.1",
     "typescript": "~5.9.3",
     "vite": "^7.3.1"
